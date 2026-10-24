@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Product ERP{% endblock %}</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f1f5f9;color:#1e293b}
+.app{display:flex;min-height:100vh}
+.menu-toggle{display:none;background:#0f172a;color:white;border:0;border-radius:6px;padding:10px 14px;font-size:20px;cursor:pointer;margin-right:10px}.sidebar{width:240px;flex-shrink:0;background:#0f172a;color:#fff;padding:24px 16px}
+.brand{font-size:23px;font-weight:bold;margin:0 10px 32px}
+.brand span{color:#38bdf8}
+.menu-section{display:block;width:100%;border:0;background:transparent;text-align:left;font-family:inherit;font-weight:normal;cursor:pointer;}
+.nav-label{font-size:11px;color:#94a3b8;margin:22px 10px 8px;text-transform:uppercase;letter-spacing:1px}
+.sidebar a{display:block;color:#cbd5e1;text-decoration:none;padding:12px;border-radius:7px;margin:4px 0}
+.sidebar a:hover,.sidebar a.active{background:#263449;color:#fff}
+.main{flex:1;min-width:0}
+.topbar{background:#fff;padding:20px 26px;border-bottom:1px solid #e2e8f0;font-weight:bold}
+.content{padding:26px}
+h1{margin-top:0}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}
+.number{font-size:28px;font-weight:bold;margin-top:10px}
+.muted{color:#64748b}
+table{width:100%;border-collapse:collapse;background:#fff}
+th,td{text-align:left;padding:12px;border-bottom:1px solid #e2e8f0}
+th{background:#f8fafc}
+.btn{display:inline-block;background:#2563eb;color:#fff;padding:10px 14px;border:0;border-radius:6px;text-decoration:none;cursor:pointer}
+.btn-danger{background:#dc2626}
+.btn-secondary{background:#475569}
+input, select, textarea {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+    color: #0f172a;
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    margin: 5px 0 14px;
+}
+select {
+    min-height: 44px;
+    appearance: auto;
+    -webkit-appearance: menulist;
+}
+select option {
+    color: #0f172a;
+    background-color: #ffffff;
+}
+label{font-weight:bold}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.warning{color:#b45309;font-weight:bold}
+
+.menu-toggle{display:none}
+@media(max-width:700px){
+  .app{display:block}
+  .menu-toggle{display:inline-block}
+  .sidebar{
+    display:none;
+    width:100%;
+    padding:14px;
+  }
+  .sidebar.open{display:block}
+  .brand{margin:0 8px 12px}
+  .nav-label{margin-top:12px}
+  .sidebar a{display:block;padding:11px}
+  .content{padding:15px}
+  .table-wrap{overflow-x:auto}
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+<button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" onclick="toggleSidebar()">☰ Menu</button>
+<aside class="sidebar">
+  <div class="brand">Product<span>ERP</span></div>
+  <button type="button" class="nav-label menu-section" onclick="toggleSection('workspace-links', this)" aria-expanded="true">Workspace ▾</button>
+  <div id="workspace-links">
+<a href="/" class="{% if request.path == '/' %}active{% endif %}">▦ Dashboard</a>
+  <a href="/products/" class="{% if '/products/' in request.path %}active{% endif %}">▣ Products</a>
+  <a href="/categories/" class="{% if '/categories/' in request.path %}active{% endif %}">◈ Categories</a>
+</div>
+  <button type="button" class="nav-label menu-section" onclick="toggleSection('management-links', this)" aria-expanded="true">Management ▾</button>
+  <div id="management-links">
+<a href="/products/">▤ Inventory</a>
+  <a href="/sales/" class="{% if '/sales/' in request.path %}active{% endif %}">💰 Sales</a>
+  <a href="/sales/report/" class="{% if request.path == '/sales/report/' %}active{% endif %}">📊 Reports</a>
+  <a href="/admin/auth/user/">👥 Users</a>
+  <a href="/admin/">⚙ Settings</a>
+  <a href="/admin/">⚙ Admin</a>
+</div>
+</aside>
+<div class="main">
+<header class="topbar" style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+">
+    <div style="font-size:24px;font-weight:800;color:#0f172a;">
+        Product Management ERP
+    </div>
+
+    <div style="
+        display:flex;
+        align-items:center;
+        justify-content:flex-end;
+        gap:14px;
+        margin-left:auto;
+    ">
+        <div style="text-align:right;font-size:14px;color:#475569;line-height:1.8;">
+            <div><strong>CEO:</strong> MD. Mizanur Rahman</div>
+            <div><strong>Email:</strong>
+                <a href="mailto:ceomizan1971@gmail.com"
+                   style="color:#2563eb;text-decoration:none;">
+                    ceomizan1971@gmail.com
+                </a>
+            </div>
+        </div>
+
+        <div aria-label="Product ERP logo" style="
+            width:58px;
+            height:58px;
+            min-width:58px;
+            border-radius:15px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background:linear-gradient(135deg,#2563eb,#0f172a);
+            color:#ffffff;
+            font-size:20px;
+            font-weight:900;
+            letter-spacing:-1px;
+            box-shadow:0 5px 14px rgba(37,99,235,.25);
+        ">ERP</div>
+    </div>
+</header>
+<main class="content">
+{% block content %}{% endblock %}
+</main>
+</div>
+</div>
+
+<script>
+function toggleSidebar() {
+    const sidebar = document.querySelector(".sidebar");
+    const button = document.querySelector(".menu-toggle");
+    if (!sidebar || !button) return;
+
+    const isOpen = sidebar.classList.toggle("open");
+    button.setAttribute("aria-expanded", String(isOpen));
+}
+</script>
+
+<script>
+function toggleSection(id, button) {
+    const section = document.getElementById(id);
+    if (!section || !button) return;
+    const expanded = section.style.display === 'none';
+    section.style.display = expanded ? 'block' : 'none';
+    button.setAttribute('aria-expanded', String(expanded));
+    button.textContent = button.textContent.replace(/[▾▸]/, expanded ? '▾' : '▸');
+}
+</script>
+\n</body>
+</html>

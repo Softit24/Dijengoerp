@@ -1,0 +1,19 @@
+.venv/
+__pycache__/
+*.py[cod]
+db.sqlite3
+products_backup.json
+.env
+.env.*
+staticfiles/
+media/
+*.log
+
+# Temporary and backup files
+*.save
+*.bak
+*.backup
+*.before-settings
+*.roles-backup
+*.pyy
+*.backup[0-9]*

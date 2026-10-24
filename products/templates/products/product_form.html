@@ -1,0 +1,22 @@
+{% extends "products/base.html" %}
+{% block title %}{{ heading }} | Product ERP{% endblock %}
+{% block content %}
+<h1>{{ heading }}</h1>
+<div class="card">
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for field in form %}
+      <div>
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% for error in field.errors %}
+          <p class="warning">{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endfor %}
+    <button class="btn" type="submit">Save Product</button>
+    <a class="btn btn-secondary" href="{% url 'products:product_list' %}">Cancel</a>
+  </form>
+</div>
+{% endblock %}

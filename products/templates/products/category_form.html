@@ -1,0 +1,21 @@
+{% extends "products/base.html" %}
+
+{% block title %}{{ heading }} | Product Management ERP{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width:650px;">
+    <h1>{{ heading }}</h1>
+    <p class="muted">Enter the category information below.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div class="actions">
+            <button type="submit" class="btn">Save Category</button>
+            <a href="{% url 'products:category_list' %}"
+               class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

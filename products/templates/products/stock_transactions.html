@@ -1,0 +1,44 @@
+{% extends "products/base.html" %}
+{% block title %}Inventory Transactions | Product ERP{% endblock %}
+{% block content %}
+<h1>Inventory Transactions</h1>
+
+<div class="card">
+    <h2>Record Stock Movement</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn" type="submit">Update Stock</button>
+    </form>
+</div>
+
+<div class="card table-wrap">
+    <h2>Recent Transactions</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>SKU</th>
+                <th>Product</th>
+                <th>Type</th>
+                <th>Quantity</th>
+                <th>Reason</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in transactions %}
+            <tr>
+                <td>{{ item.created_at|date:"Y-m-d H:i" }}</td>
+                <td>{{ item.product.sku }}</td>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.get_transaction_type_display }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.reason|default:"—" }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="6">No stock transactions yet.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "products/base.html" %}
+{% block title %}Sales | Product ERP{% endblock %}
+{% block content %}
+<h1>Record a Sale</h1>
+
+<div class="card">
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn" type="submit">Record Sale</button>
+    </form>
+</div>
+
+<div class="card table-wrap">
+    <h2>Recent Sales</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>SKU</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sale in sales %}
+            <tr>
+                <td>{{ sale.created_at|date:"Y-m-d H:i" }}</td>
+                <td>{{ sale.product.sku }}</td>
+                <td>{{ sale.product.name }}</td>
+                <td>{{ sale.quantity }}</td>
+                <td>{{ sale.unit_price|floatformat:2 }}</td>
+                <td>{{ sale.total_amount|floatformat:2 }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6">No sales recorded yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "products/base.html" %}
+
+{% block title %}Product Management ERP{% endblock %}
+
+{% block content %}
+<div class="actions">
+        <a class="button" href="/admin/products/product/add/">+ Add Product</a>
+        <a class="button" href="/admin/products/product/">View Products</a>
+        <a class="button" href="/admin/products/category/add/">+ Add Category</a>
+        <a class="button" href="/admin/">Admin Panel</a>
+        <a class="button" href="/inventory/transactions/">Inventory Transactions</a>
+    </div>
+
+    <div class="cards">
+        <div class="card">
+            <p>Active Products</p>
+            <div class="number">{{ total_products }}</div>
+        </div>
+        <div class="card">
+            <p>Categories</p>
+            <div class="number">{{ total_categories }}</div>
+        </div>
+        <div class="card">
+            <p>Out of Stock Products</p>
+            <div class="number" style="color:#dc2626;">{{ out_of_stock_count }}</div>
+        </div>
+        <div class="card">
+            <p>Total Stock Units</p>
+            <div class="number">{{ total_stock_units }}</div>
+        </div>
+        <div class="card">
+            <p>Inventory Cost Value</p>
+            <div class="number">{{ inventory_cost_value|floatformat:2 }}</div>
+        </div>
+    </div>
+
+    <section>
+        <h2>Low Stock Alerts</h2>
+        {% if low_stock_products %}
+        <table>
+            <thead>
+                <tr><th>SKU</th><th>Product</th><th>In Stock</th><th>Reorder Level</th></tr>
+            </thead>
+            <tbody>
+                {% for product in low_stock_products %}
+                <tr>
+                    <td>{{ product.sku }}</td>
+                    <td>{{ product.name }}</td>
+                    <td class="warning">{{ product.stock_quantity }}</td>
+                    <td>{{ product.reorder_level }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="muted">No low-stock products. Your inventory is looking good!</p>
+        {% endif %}
+    </section>
+
+    <section>
+        <h2>Recently Added Products</h2>
+        {% if recent_products %}
+        <table>
+            <thead>
+                <tr><th>SKU</th><th>Product</th><th>Category</th><th>Stock</th><th>Sell price (Tk)</th></tr>
+            </thead>
+            <tbody>
+                {% for product in recent_products %}
+                <tr>
+                    <td>{{ product.sku }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.category.name }}</td>
+                    <td>
+                        {% if product.stock_quantity == 0 %}
+                            <span style="color:#dc2626;font-weight:bold;">Out of Stock</span>
+                        {% elif product.stock_quantity <= product.reorder_level %}
+                            <span style="color:#d97706;font-weight:bold;">Low Stock ({{ product.stock_quantity }})</span>
+                        {% else %}
+                            <span style="color:#16a34a;font-weight:bold;">In Stock ({{ product.stock_quantity }})</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ product.selling_price|floatformat:2 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="muted">No products yet. Use Add Product to get started.</p>
+        {% endif %}
+    </section>
+{% endblock %}

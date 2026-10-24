@@ -1,0 +1,80 @@
+{% extends "products/base.html" %}
+{% block title %}Sales Reports | Product ERP{% endblock %}
+{% block content %}
+<h1>Sales Dashboard</h1>
+<p class="muted">Revenue and estimated profit from recorded sales.</p>
+
+<div class="grid">
+    <div class="card">
+        <div class="muted">Total Revenue</div>
+        <div class="number">{{ total_revenue|floatformat:2 }}</div>
+    </div>
+    <div class="card">
+        <div class="muted">Today's Revenue</div>
+        <div class="number">{{ today_revenue|floatformat:2 }}</div>
+    </div>
+    <div class="card">
+        <div class="muted">Recorded Sales</div>
+        <div class="number">{{ total_sales }}</div>
+    </div>
+    <div class="card">
+        <div class="muted">Units Sold</div>
+        <div class="number">{{ total_units }}</div>
+    </div>
+    <div class="card">
+        <div class="muted">Estimated Profit</div>
+        <div class="number" style="color:#16a34a;">
+            {{ estimated_profit|floatformat:2 }}
+        </div>
+    </div>
+</div>
+
+<div class="card table-wrap">
+    <div class="actions">
+        <h2>Recent Sales</h2>
+
+        <a class="btn" href="{% url 'products:sales_export_pdf' %}">
+            📄 Export to PDF
+        </a>
+
+
+        <a class="btn" href="{% url 'products:sales_export_excel' %}">
+            📥 Export to Excel
+        </a>
+
+        <a class="btn" href="{% url 'products:sale_create' %}">+ Record Sale</a>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>SKU</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+                <th>Estimated Profit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sale in sales %}
+            <tr>
+                <td>{{ sale.created_at|date:"Y-m-d H:i" }}</td>
+                <td>{{ sale.product.sku }}</td>
+                <td>{{ sale.product.name }}</td>
+                <td>{{ sale.quantity }}</td>
+                <td>{{ sale.unit_price|floatformat:2 }}</td>
+                <td>{{ sale.total_amount|floatformat:2 }}</td>
+                <td>{{ sale.estimated_profit|floatformat:2 }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7">No sales recorded yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p class="muted">
+        Profit figures in the summary are estimates based on current product
+        cost prices, not historical costs at the time of sale.
+    </p>
+</div>
+{% endblock %}

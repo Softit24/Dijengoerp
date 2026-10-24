@@ -1,0 +1,14 @@
+{% extends "products/base.html" %}
+{% block title %}Delete Product | Product ERP{% endblock %}
+{% block content %}
+<h1>Delete Product</h1>
+<div class="card">
+  <p>Are you sure you want to delete <strong>{{ product.name }}</strong> ({{ product.sku }})?</p>
+  <p class="warning">This action cannot be undone.</p>
+  <form method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger" type="submit">Confirm Delete</button>
+    <a class="btn btn-secondary" href="{% url 'products:product_list' %}">Cancel</a>
+  </form>
+</div>
+{% endblock %}
